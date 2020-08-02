@@ -1,0 +1,74 @@
+0073C876 - 89 86 08010000  - mov [esi+00000108],eax
+0073C603 - 89 81 08010000  - mov [ecx+00000108],eax
+
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable>
+  <CheatEntries>
+    <CheatEntry>
+      <ID>0</ID>
+      <Description>"无描述"</Description>
+      <LastState Value="1048598" RealAddress="0CA77BC0"/>
+      <VariableType>4 Bytes</VariableType>
+      <Address>0CA77BC0</Address>
+    </CheatEntry>
+  </CheatEntries>
+</CheatTable>
+
+0073C5FF - CC - int 3 
+0073C600 - 8B 41 08  - mov eax,[ecx+08]
+0073C603 - 89 81 08010000  - mov [ecx+00000108],eax <<
+0073C609 - 89 81 0C010000  - mov [ecx+0000010C],eax
+0073C60F - 8B 01  - mov eax,[ecx]
+
+EAX=00100017
+
+
+0073C871 - FF 75 F8  - push [ebp-08]
+0073C874 - 8B CE  - mov ecx,esi
+0073C876 - 89 86 08010000  - mov [esi+00000108],eax <<
+0073C87C - E8 EF000000 - call warspear.exe+33C970
+0073C881 - 8B 06  - mov eax,[esi]
+
+
+EAX=00100017
+
+# 修改血量
+pos 983049
+
+0055AFDA - 74 20 - je warspear.exe+15AFFC
+0055AFDC - 8B 4E 18  - mov ecx,[esi+18]
+0055AFDF - 01 88 F4000000  - add [eax+000000F4],ecx <<
+0055AFE5 - 8B 10  - mov edx,[eax]
+0055AFE7 - 8B C8  - mov ecx,eax
+
+EAX=0BFDE170
+
+201187696 怪物基址
+
+9395672 第一位的值
+
+0055B7DA - 29 8E F4000000  - sub [esi+000000F4],ecx
+0055AFDF - 01 88 F4000000  - add [eax+000000F4],ecx
+
+asm:
+edi:e109018
+
+eax = *(ecx + 0x30)
+eax = *(eax)
+edx = (ebp + 0x8)
+while 1:
+	ecx = *(eax + 0x10)
+	if ecx > edx:
+		eax = *(eax + 0x4)
+		continue
+	elif exc > edx:
+		eax = *(eax + 0x8)
+		continue
+	else:
+		eax = *(eax + 0x14)
+		break
+	
+	
+ec:key
+f4:hp
+108:pos
