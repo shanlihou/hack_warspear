@@ -1,0 +1,2 @@
+#pragma once
+#define BASE_MONSTER_LIST_ROOT 9890352
