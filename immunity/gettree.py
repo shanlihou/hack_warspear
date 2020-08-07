@@ -39,6 +39,23 @@ class ItemsInfo(object):
         self.items[hp].append(Item(hp, ptr))
         self.hp_set.add(hp)
 
+    def parse_one_diff(self, imm, hp):
+        item_list = self.items[hp]
+        iter_list = [Item.print_tag()]
+        iter_list.extend(
+            map(lambda x: x.print_iter(imm), item_list))
+
+        for i in range(400):
+            vals = map(next, iter_list)
+            vals_str = ''.join(vals)
+
+            val_dic = {}
+            for val in vals[1:]:
+                val_dic[val] = val_dic.get(val, 0) + 1
+
+            if len(val_dic) == 2 and 1 in val_dic.values():
+                imm.log(vals_str)
+
     def cmp(self, imm):
         iter_list = []
         iter_list.append(Item.print_tag())
@@ -57,7 +74,8 @@ class ItemsInfo(object):
         for i in range(400):
             vals = map(next, iter_list)
             vals_str = ''.join(vals)
-            # if vals[index_203] == vals[index_203 + 1] and vals[index_203] != '{:>10d}'.format(0):
+            # if vals[index_203] == vals[index_203 + 1] and vals[index_203] !=
+            # '{:>10d}'.format(0):
             if 1:
                 imm.log(vals_str)
 
@@ -90,7 +108,7 @@ def read_mons_info():
 
     read_tree(imm, root, ii.add_obj)
 
-    ii.cmp(imm)
+    ii.parse_one_diff(imm, 203)
 
 
 def attach():
