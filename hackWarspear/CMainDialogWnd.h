@@ -22,4 +22,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
     afx_msg void OnBnClickedButtonTest();
+    afx_msg void OnBnClickedButtonHook();
+    afx_msg void OnBnClickedButtonUnhook();
+    afx_msg void OnBnClickedButtonAttack();
 };

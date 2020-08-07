@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="HookMainThread">
+      <UniqueIdentifier>{d1c5c2fb-b8bc-4d33-af7d-4166dc415fcd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseGame.h">
@@ -24,9 +27,18 @@
     <ClInclude Include="debug.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="HookGameMainThread.h">
+      <Filter>HookMainThread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StructGame.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HookGameMainThread.cpp">
+      <Filter>HookMainThread</Filter>
+    </ClCompile>
+    <ClCompile Include="debug.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

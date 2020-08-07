@@ -21,9 +21,12 @@
   <ItemGroup>
     <ClInclude Include="BaseGame.h" />
     <ClInclude Include="debug.h" />
+    <ClInclude Include="HookGameMainThread.h" />
     <ClInclude Include="StructGame.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="debug.cpp" />
+    <ClCompile Include="HookGameMainThread.cpp" />
     <ClCompile Include="StructGame.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

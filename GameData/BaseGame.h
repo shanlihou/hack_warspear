@@ -1,2 +1,3 @@
 #pragma once
 #define BASE_MONSTER_LIST_ROOT 9890352
+#define BASE_HANDLE_ADDR 0x0096FC80

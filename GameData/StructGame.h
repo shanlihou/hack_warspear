@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <map>
 #include <memory>
+HWND getGameWndHandle();
 
 class EntityBase
 {

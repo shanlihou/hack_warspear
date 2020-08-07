@@ -88,3 +88,15 @@ void EntityMgr::test()
         log_debug("error happened!\n");
     }
 }
+
+HWND getGameWndHandle()
+{
+    try
+    {
+        return *(HWND*)BASE_HANDLE_ADDR;
+    }
+    catch (...)
+    {
+        return NULL;
+    }
+}
