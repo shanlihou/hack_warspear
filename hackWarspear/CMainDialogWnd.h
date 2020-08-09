@@ -25,4 +25,5 @@ public:
     afx_msg void OnBnClickedButtonHook();
     afx_msg void OnBnClickedButtonUnhook();
     afx_msg void OnBnClickedButtonAttack();
+	afx_msg void OnBnClickedButtonSearchDead();
 };

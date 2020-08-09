@@ -10,15 +10,19 @@ public:
     EntityBase()
     {}
 
-    EntityBase(DWORD ptr, DWORD hp)
+    EntityBase(DWORD ptr, DWORD hp, DWORD type)
         :basePtr(ptr),
-        HP(hp)
+        HP(hp),
+        type(type)
     {
     };
 
     virtual void attack(DWORD ptr);
+    virtual void searchDead();
+
 public:
     DWORD basePtr;
+    DWORD type;
     DWORD HP;
 
     typedef std::shared_ptr<EntityBase> EntityBasePtr;
@@ -27,7 +31,7 @@ public:
 class MonsterInfo: EntityBase
 {
 public:
-    MonsterInfo(DWORD ptr, DWORD hp) :EntityBase(ptr, hp)
+    MonsterInfo(DWORD ptr, DWORD hp) :EntityBase(ptr, hp, 1)
     {};
 };
 
@@ -38,6 +42,7 @@ private:
     std::map<DWORD, EntityBase::EntityBasePtr> entities;
     void readTree(DWORD);
     EntityBase::EntityBasePtr getEntityByHp(DWORD hp);
+    EntityBase::EntityBasePtr getEntityByType(DWORD hp);
 
 public:
     void getData();

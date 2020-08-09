@@ -1,6 +1,7 @@
 #include "BaseGame.h"
 #include "StructGame.h"
 #include "debug.h"
+#include "const.h"
 
 void EntityBase::attack(DWORD monsterPtr)
 {
@@ -22,6 +23,44 @@ void EntityBase::attack(DWORD monsterPtr)
     }
 }
 
+void EntityBase::searchDead()
+{
+    try
+    {
+        /*
+        a = imm.readLong(0x96ea30)
+        a = imm.readLong(a + 0x10)
+        a = imm.readLong(a + 0x34)
+        a = imm.readLong(a + 0x38c)
+        a = imm.readLong(a + 0xe14)
+        a = imm.readLong(a + 0x78)
+        a = imm.readLong(a)
+        a = imm.readLong(a + 0x8)*/
+        DWORD tmp_ptr = *(DWORD*)(BASE_DEAD_SEARCH_ADDR);
+        tmp_ptr = *(DWORD*)(tmp_ptr + 0x10);
+        tmp_ptr = *(DWORD*)(tmp_ptr + 0x34);
+        tmp_ptr = *(DWORD*)(tmp_ptr + 0x38c);
+        tmp_ptr = *(DWORD*)(tmp_ptr + 0xe14);
+        tmp_ptr = *(DWORD*)(tmp_ptr + 0x78);
+        tmp_ptr = *(DWORD*)(tmp_ptr + 0);
+        tmp_ptr = *(DWORD*)(tmp_ptr + 0x8);
+        
+        DWORD selfPtr = this->basePtr;
+        log_debug("will searchDead %p\n", selfPtr);
+        __asm
+        {
+            mov eax, tmp_ptr
+            push eax //怪物的地址
+            mov ecx, selfPtr //自己的地址
+            mov eax, 0x0073F0C0
+            CALL eax
+        }
+    }
+    catch (...)
+    {
+    }
+}
+
 
 void EntityMgr::readTree(DWORD node)
 {
@@ -35,12 +74,13 @@ void EntityMgr::readTree(DWORD node)
     DWORD value = *(DWORD*)(node + 0x10);
     DWORD ptr = *(DWORD*)(node + 0x14);
     DWORD hp = *(DWORD*)(ptr + 0xf4);
+    DWORD type = *(DWORD*)(ptr + 0x4);
 
     log_debug("hp:%d, ptr:%p\n", hp, (void*)ptr);
     readTree(left);
     readTree(right);
 
-    EntityBase::EntityBasePtr entity(new EntityBase(ptr, hp));
+    EntityBase::EntityBasePtr entity(new EntityBase(ptr, hp, type));
     this->entities.insert(std::make_pair(value, entity));
 }
 
@@ -54,6 +94,18 @@ EntityBase::EntityBasePtr EntityMgr::getEntityByHp(DWORD hp)
         }
     }
 
+    return EntityBase::EntityBasePtr();
+}
+
+EntityBase::EntityBasePtr EntityMgr::getEntityByType(DWORD type)
+{
+    for (auto ptr : this->entities)
+    {
+        if (ptr.second->type == type)
+        {
+            return EntityBase::EntityBasePtr(ptr.second);
+        }
+    }
     return EntityBase::EntityBasePtr();
 }
 
@@ -78,10 +130,9 @@ void EntityMgr::test()
 {
     try
     {
-        auto avatar = this->getEntityByHp(1214);
-        auto mon = this->getEntityByHp(1);
-        log_debug("will attack\n");
-        avatar->attack(mon->basePtr);
+        auto avatar = this->getEntityByType(EntityType::SELF);
+        log_debug("avatar :%d\n", avatar->HP);
+        avatar->searchDead();
     }
     catch (...)
     {

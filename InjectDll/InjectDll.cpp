@@ -3,9 +3,12 @@
 
 #include <iostream>
 #include <Windows.h>
+#include <direct.h>
+#include <io.h>
 
 #define GAME_CLASS_NAME "Warspear"
-#define DLL_PATH "E:\\shgithub\\cpp\\hackWarspear\\hackWarspear\\Debug\\hackWarspear.dll"
+#define DLL_PATH "\\Debug\\hackWarspear.dll"
+//#define DLL_PATH "F:\\shgithub\\cpp\\hack_warspear\\Debug\\hackWarspear.dll"
 
 void injectDll()
 {
@@ -14,26 +17,50 @@ void injectDll()
     HANDLE hProcess = NULL;
     LPDWORD addressDW = NULL;
     HANDLE threadHandle = NULL;
+    HWND warHandle = NULL;
 
-    HWND warHandle = FindWindowA(GAME_CLASS_NAME, NULL);
+    char dllPath[1024];
+    char* buffer = _getcwd(NULL, 0);
+    if (buffer == NULL)
+    {
+        printf("could get buffer\n");
+        return;
+    }
+    char* pos = strrchr(buffer, '\\');
+    strncpy_s(dllPath, buffer, pos - buffer);
+    dllPath[pos - buffer] = 0;
+    strcat_s(dllPath, DLL_PATH);
+    printf("dll:%s\n", dllPath);
+    free(buffer);
+
+    warHandle = FindWindowA(GAME_CLASS_NAME, NULL);
     if (warHandle == 0)
         return;
 
     printf("find handle\n");
     GetWindowThreadProcessId(warHandle, &pid);
     if (pid == 0)
+    {
+        printf("get pid error\n");
         return;
+    }
 
     hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
     if (hProcess == NULL)
+    {
+        printf("get hProcess error\n");
         return;
+    }
 
     addressDW = (LPDWORD)VirtualAllocEx(hProcess, NULL, 256, MEM_COMMIT, PAGE_READWRITE);
     if (addressDW == NULL)
+    {
+        printf("get hProcess error\n");
         return;
+    }
 
-    WriteProcessMemory(hProcess, addressDW, DLL_PATH, strlen(DLL_PATH) + 1, &byWriteSize);
-    if (byWriteSize < strlen(DLL_PATH))
+    WriteProcessMemory(hProcess, addressDW, dllPath, strlen(dllPath) + 1, &byWriteSize);
+    if (byWriteSize < strlen(dllPath))
     {
         printf("write memmory failed!");
         return;

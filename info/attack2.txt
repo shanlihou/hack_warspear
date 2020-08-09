@@ -77,10 +77,19 @@ CALL 0073F1E0
 
 //从这里调用进入switch
 0073FB51  |. E8 AA000000    CALL warspear.0073FC00
+switch:2711 attack
+switch:2716
 
-eax 914
-edx 910
-edi 90c
+自己地址offset
+0x268: 攻击目标
+传参：
+ecx:自己的地址
+
+--------------------------end------------------------
+
+eax 914 ebp + 0x10 	01 	  	
+edx 910 ebp + c  	0ecccd40
+edi 90c ebp + 8 	0eb86d30 目标地址
 pc 908
 ebp 904
 

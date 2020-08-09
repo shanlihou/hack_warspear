@@ -1,0 +1,58 @@
+搜索尸体
+switch 2716
+
+edi:0CF036F8
+ecx:0E7093F8
+
+Call stack of main thread
+Address    Returns to    Procedure / arguments                 Called from                   Frame      Stack Dump
+0019F880   0073FB56      <warspear.switch>                     warspear.0073FB51             0019F87C   0CF036F8 0ECCCBC
+0019F89C   005A9338      warspear.0073FA90                     warspear.005A9333             0019F898
+0019F8C0   00781DB8      warspear.005A9210                     warspear.00781DB5             0019F8BC   018E0084 0E8851F
+0019F8C4   018E0084        Arg1 = 018E0084
+0019F8D8   007BC2D5      warspear.00781C60                     warspear.007BC2D0             0019F8D4   0E8851F0 08A7028
+0019F8DC   0E8851F0        Arg1 = 0E8851F0
+0019F8EC   005A98A0      warspear.007BC2A0                     warspear.005A989B             0019F8E8   0E8851F0 0E8851F
+0019F8F0   0E8851F0        Arg1 = 0E8851F0
+0019F900   0079129D      warspear.005A9890                     warspear.0079129A             0019F8FC   0E8851F0 0EB0FB6
+0019F904   0E8851F0        Arg1 = 0E8851F0
+0019F94C   0071D2C8      Maybe warspear.00791120               warspear.0071D2C6             0019F948   0E8851F0 0315006
+0019F950   0E8851F0        Arg1 = 0E8851F0
+0019F95C   0083A61C      warspear.0071D2A0                     warspear.0083A619             0019F958   0E8851F0 0EB0FB6
+0019F960   0E8851F0        Arg1 = 0E8851F0
+0019F970   0084E1C7      warspear.0083A600                     warspear.0084E1C2             0019F96C   0E8851F0 0019F9B
+0019F974   0E8851F0        Arg1 = 0E8851F0
+0019F97C   004B2588      warspear.0084E1B0                     warspear.004B2585             0019F978   0096FC10 001204A
+0019F980   0096FC10        Arg1 = 0096FC10
+0019F9B8   00832EC1      warspear.004B2500                     warspear.00832EBC             0019F9B4   00000001 0019FAC
+0019F9D0   74E444BB      warspear.00832E30                     USER32.74E444B9               0019F9CC   001204A8 0000011
+0019F9D4   001204A8        Arg1 = 001204A8
+0019F9D8   00000113        Arg2 = 00000113
+0019F9DC   00000000        Arg3 = 00000000
+0019F9E0   5F8D1088        Arg4 = 5F8D1088
+0019F9FC   74E227FC      USER32.74E44490                       USER32.74E227F7               0019F9F8   00832E30 001204A
+0019FAD8   74E2422B      USER32.74E225A0                       USER32.74E24226               0019FAD4   00832E30 0000000
+0019FB44   74E23F30      USER32.74E23F40                       USER32.74E23F2B               0019FB40   00000113 0019FEF
+0019FB50   00832C66      Includes USER32.74E23F30              warspear.00832C64             0019FB4C   0019FCE8 004D842
+0019FEF4   00832516      warspear.00832560                     warspear.00832511             0019FEF0   00832508 00B867D
+0019FEF8   00832508        Arg1 = 00832508
+0019FEFC   00B867D8        Arg2 = 00B867D8
+0019FF28   004D8528      warspear.008324C0                     warspear.004D8523             0019FF24   00400000 0000000
+0019FF2C   00400000        Arg1 = 00400000
+0019FF30   00000000        Arg2 = 00000000
+0019FF34   00B83E6F        Arg3 = 00B83E6F
+0019FF38   00000001        Arg4 = 00000001
+0019FF3C   43EFFB1D      *** CORRUPT ENTRY ***                                               0019FF70
+
+
+MOV EAX,DWORD PTR DS:[96EA30]
+MOV ECX,DWORD PTR DS:[EAX+10]
+MOV ECX,DWORD PTR DS:[ECX+34]
+
+0073FD37  |> 57             PUSH EDI                                 ; /Arg1; Case 2716 of switch 0073FC61
+0073FD38  |. 8BCE           MOV ECX,ESI                              ; |
+0073FD3A  |. E8 81F3FFFF    CALL warspear.0073F0C0                   ; \warspear.0073F0C0
+
+
+
+

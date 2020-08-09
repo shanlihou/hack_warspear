@@ -72,3 +72,5 @@ while 1:
 ec:key
 f4:hp
 108:pos
+0x58:未知，但是每个不一样
+0x4: 3 == self

@@ -7,7 +7,8 @@ const DWORD g_myMsgCode = RegisterWindowMessageA("myMsgCode");
 
 enum MsgAction
 {
-    ATTACK = 0
+    ATTACK = 0,
+    DEAD_SEARCH
 };
 
 void test()
@@ -29,6 +30,8 @@ LRESULT CALLBACK GameWndProc(int nCode, WPARAM wParam, LPARAM lParam)
             case MsgAction::ATTACK:
                 test();
                 break;
+            case MsgAction::DEAD_SEARCH:
+                break;
             default:
                 break;
             }
@@ -41,6 +44,7 @@ LRESULT CALLBACK GameWndProc(int nCode, WPARAM wParam, LPARAM lParam)
 
 DWORD HookMainThread()
 {
+    log_debug("hook ok\n");
     HWND hGame = getGameWndHandle();
     DWORD ndThreadId = GetWindowThreadProcessId(hGame, NULL);
     if (ndThreadId == NULL)
@@ -54,6 +58,7 @@ DWORD HookMainThread()
 
 DWORD UnHookMainThread()
 {
+    log_debug("unhook ok\n");
     UnhookWindowsHookEx(g_hhkGame);
     return 1;
 }
