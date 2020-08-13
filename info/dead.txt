@@ -10,7 +10,7 @@ Address    Returns to    Procedure / arguments                 Called from      
 0019F89C   005A9338      warspear.0073FA90                     warspear.005A9333             0019F898
 0019F8C0   00781DB8      warspear.005A9210                     warspear.00781DB5             0019F8BC   018E0084 0E8851F
 0019F8C4   018E0084        Arg1 = 018E0084
-0019F8D8   007BC2D5      warspear.00781C60                     warspear.007BC2D0             0019F8D4   0E8851F0 08A7028
+0019F8D8   007BC2D5      warspear.00781C60                     warspear.007BC2D0             0019F8D4   0E8851F0 08A7028 # ----------------------timer
 0019F8DC   0E8851F0        Arg1 = 0E8851F0
 0019F8EC   005A98A0      warspear.007BC2A0                     warspear.005A989B             0019F8E8   0E8851F0 0E8851F
 0019F8F0   0E8851F0        Arg1 = 0E8851F0
@@ -54,5 +54,8 @@ MOV ECX,DWORD PTR DS:[ECX+34]
 0073FD3A  |. E8 81F3FFFF    CALL warspear.0073F0C0                   ; \warspear.0073F0C0
 
 
+
+ecx >> 6
+if 
 
 
