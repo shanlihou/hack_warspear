@@ -1,5 +1,6 @@
 from immlib import *
 import re
+import rec_down
 
 ADD_HOOK = 1
 UN_HOOK = 2
@@ -7,6 +8,23 @@ HOOK_WITH_ARG = 3
 HOOK_TEST = 4
 
 #############################################################################
+class RecHandler(object):
+    def __init__(self, imm, regs):
+        self.regs = regs
+        self.imm = imm
+
+    def handle_reg(self, val):
+        val_up = val.upper()
+        if val_up in self.regs:
+            return int(self.regs[val_up])
+
+        return 0
+
+    def handle_addr(self, val):
+        ret = self.imm.readLong(val)
+        return ret
+
+
 class HookWar(LogBpHook):
     def __init__(self, desp, print_str):
         LogBpHook.__init__(self)
@@ -17,14 +35,14 @@ class HookWar(LogBpHook):
     def run(self,regs):
         '''
 
-
         '''
         imm = Debugger()
-        high_p = self.print_str.upper()
-        if high_p in regs:
-            imm.log('{}:{}'.format(high_p, regs[high_p]))
-        else:
-            imm.log("{}:{}".format(self.print_str, str(regs)))
+
+        # high_p = self.print_str.upper()
+        # if high_p in regs:
+        #     imm.log('{}:{}'.format(high_p, regs[high_p]))
+        # else:
+        #     imm.log("{}:{}".format(self.print_str, str(regs)))
 
 
 class InstallHook(object):
@@ -114,6 +132,11 @@ def main(args):
             return 'hook war test args wrong'
 
         print_str = args[2]
-        imm.log(str(imm.decodeAddress(print_str)))
+        imm.log(str(imm.getRegs()))
+
+        rh = RecHandler(imm, imm.getRegs())
+        e = rec_down.ExpressionEvaluator(rh)
+        ret = e.parse(print_str)
+        imm.log('ret:{}'.format(ret))
 
     return 'hello'
