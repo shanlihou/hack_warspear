@@ -37,6 +37,14 @@ class HookWar(LogBpHook):
 
         '''
         imm = Debugger()
+        if self.print_str:
+            exprs = self.print_str.split(',')
+            rh = RecHandler(imm, regs)
+            ee = rec_down.ExpressionEvaluator(rh)
+            rets = map(lambda x: '{}:{}'.format(x, ee.parse(x)), exprs)
+            imm.log(','.join(rets))
+        else:
+            imm.log('{}:{}'.format('regs:', str(regs)))
 
         # high_p = self.print_str.upper()
         # if high_p in regs:
