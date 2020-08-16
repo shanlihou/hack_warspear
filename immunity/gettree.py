@@ -100,8 +100,8 @@ def read_mons_info():
     imm = immlib.Debugger()
     a1_addr = 0x96EA30
     a2_addr = imm.readLong(a1_addr)
-    a3_addr = imm.readLong(a2_addr + 16)
-    a4_addr = imm.readLong(a3_addr + 48)
+    a3_addr = imm.readLong(a2_addr + 0x10)
+    a4_addr = imm.readLong(a3_addr + 0x30)
     root = imm.readLong(a4_addr)
 
     ii = ItemsInfo()
@@ -110,6 +110,17 @@ def read_mons_info():
 
     ii.parse_one_diff(imm, 203)
 
+def get_bags_info():
+    #     eax=[0x96ea30]
+    # eax=[eax+0x10]
+    # eax=eax+0x10c8
+    # eax = [eax+0x30]
+    imm = immlib.Debugger()
+    eax = imm.readLong(0x96ea30)
+    eax = imm.readLong(eax+0x10)
+    eax = eax + 0x10c8
+    eax = imm.readLong(eax+0x30)
+    edi = imm.readLong(eax + 0 * 4)
 
 def add_hook():
     imm = immlib.Debugger()
@@ -123,5 +134,5 @@ def attach():
 
 
 def main(args):
-    add_hook()
+    read_mons_info()
     return "[*] PyCommand Executed!"

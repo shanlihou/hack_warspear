@@ -59,3 +59,64 @@ ecx >> 6
 if 
 
 
+!hook_war 3 73fae7 ecx,[ecx+0x78],[[ecx+0x78]],[[[ecx+0x78]]+0xc],[[[[ecx+0x78]]+0xc]+0xc] before
+!hook_war 3 73fb0c eax,[eax],[[eax]+0xc],[[[eax]+0xc]+0xc] after
+!hook_war 3 57fc64 [esi+0x78],[[esi+0x78]],[[[esi+0x78]]+0xc],[[[[esi+0x78]]+0xc]+0xc] in2
+!hook_war a 73fafd [esi+0x38c],[[esi+0x38c]+0xe14],[[[esi+0x38c]+0xe14]+0x78],[[[[esi+0x38c]+0xe14]+0x78]],[[[[[esi+0x38c]+0xe14]+0x78]]+0x8] print_edi
+!hook_war a 57fc5f esi,[esi+0x48],[[esi+0x48]+0x3c],[[[esi+0x48]+0x3c]],[[[[esi+0x48]+0x3c]]+0x14] eax+14
+!hook_war a 73fae7 [0x96ea30],[[0x96ea30]+0x10],[[[0x96ea30]+0x10]+0x34],[[[[0x96ea30]+0x10]+0x34]+0x38c],[[[[[0x96ea30]+0x10]+0x34]+0x38c]+0xe14]
+57f5a5
+
+
+# 最后调用到modify 目标的地方
+Call stack of main thread
+Address    Returns to    Procedure / arguments                 Called from                   Frame      Stack Dump
+0019F820   0057EDB8      warspear.00580AC0                     warspear.0057EDB3             0019F87C   0CEE2E20 0000271
+0019F824   0CEE2E20        Arg1 = 0CEE2E20
+0019F828   00002716        Arg2 = 00002716
+0019F82C   00000000        Arg3 = 00000000
+0019F880   0057FC64      <warspear.change switch>              warspear.0057FC5F             0019F87C   00000001 0E34D91
+0019F88C   0073FAEC      warspear.0057FC10                     warspear.0073FAE7             0019F898   08A83A48 0E29969
+0019F89C   005A9338      warspear.0073FA90                     warspear.005A9333             0019F898
+0019F8C0   00781DB8      warspear.005A9210                     warspear.00781DB5             0019F8BC   0234021D 0E1E18C
+0019F8C4   0234021D        Arg1 = 0234021D
+0019F8D8   007BC2D5      warspear.00781C60                     warspear.007BC2D0             0019F8D4   0E1E18C0 08A83A4
+0019F8DC   0E1E18C0        Arg1 = 0E1E18C0
+0019F8EC   005A98A0      warspear.007BC2A0                     warspear.005A989B             0019F8E8   0E1E18C0 0E1E18C
+0019F8F0   0E1E18C0        Arg1 = 0E1E18C0
+0019F900   0079129D      warspear.005A9890                     warspear.0079129A             0019F8FC   0E1E18C0 0E185FD
+0019F904   0E1E18C0        Arg1 = 0E1E18C0
+0019F94C   0071D2C8      Maybe warspear.00791120               warspear.0071D2C6             0019F948   0E1E18C0 0315005
+0019F950   0E1E18C0        Arg1 = 0E1E18C0
+0019F95C   0083A61C      warspear.0071D2A0                     warspear.0083A619             0019F958   0E1E18C0 0E185FD
+0019F960   0E1E18C0        Arg1 = 0E1E18C0
+0019F970   0084E1C7      warspear.0083A600                     warspear.0084E1C2             0019F96C   0E1E18C0 0019F9B
+0019F974   0E1E18C0        Arg1 = 0E1E18C0
+0019F97C   004B2588      warspear.0084E1B0                     warspear.004B2585             0019F978   0096FC10 0014093
+0019F980   0096FC10        Arg1 = 0096FC10
+0019F9B8   00832EC1      warspear.004B2500                     warspear.00832EBC             0019F9B4   00000001 0019FAC
+0019F9D0   74C245CB      warspear.00832E30                     USER32.74C245C9               0019F9CC   0014093E 0000011
+0019F9D4   0014093E        Arg1 = 0014093E
+0019F9D8   00000113        Arg2 = 00000113
+0019F9DC   00000000        Arg3 = 00000000
+0019F9E0   00B3F98C        Arg4 = 00B3F98C
+0019F9FC   74C028DC      USER32.74C245A0                       USER32.74C028D7               0019F9F8   00832E30 0014093
+0019FAD8   74C0430B      USER32.74C02680                       USER32.74C04306               0019FAD4   00832E30 0000000
+0019FB44   74C04010      USER32.74C04020                       USER32.74C0400B               0019FB40   00000113 0019FEF
+0019FB50   00832C66      Includes USER32.74C04010              warspear.00832C64             0019FB4C   0019FCE8 004D842
+0019FEF4   00832516      warspear.00832560                     warspear.00832511             0019FEF0   00832508 00C767C
+0019FEF8   00832508        Arg1 = 00832508
+0019FEFC   00C767C8        Arg2 = 00C767C8
+0019FF28   004D8528      warspear.008324C0                     warspear.004D8523             0019FF24   00400000 0000000
+0019FF2C   00400000        Arg1 = 00400000
+0019FF30   00000000        Arg2 = 00000000
+0019FF34   00C7405F        Arg3 = 00C7405F
+0019FF38   00000001        Arg4 = 00000001
+0019FF3C   D2D93693      *** CORRUPT ENTRY ***                                               0019FF70
+
+
+
+0057F59E - C7 46 08 00000000 - mov [esi+08],00000000
+00580AF4 - C7 46 08 00000000 - mov [esi+08],00000000
+00580B3A - 89 7E 08  - mov [esi+08],edi
+00580A85 - C7 46 08 00000000 - mov [esi+08],00000000

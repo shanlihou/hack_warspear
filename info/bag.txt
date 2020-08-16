@@ -1,0 +1,47 @@
+005412EC - 66 89 41 10  - mov [ecx+10],ax
+005412F0 - 88 41 12  - mov [ecx+12],al
+004018C3 - 88 08  - mov [eax],cl
+
+
+Call stack of main thread
+Address    Returns to    Procedure / arguments                 Called from                   Frame      Stack Dump
+0019F7E0   00541180      warspear.004018A0                     warspear.0054117B             0019F7DC   0DBB0668 0DBB065
+0019F7E4   0DBB0668        Arg1 = 0DBB0668
+0019F7F4   004FD478      warspear.005410C0                     warspear.004FD475             0019F7F0   0DFD3F10 015B447
+0019F7F8   0DFD3F10        Arg1 = 0DFD3F10
+0019F81C   006E6425      warspear.004FD340                     warspear.006E6420             0019F818   015B4473 0DFD2E4
+0019F91C   006E7EF2      warspear.006E63E0                     warspear.006E7EED             0019F918   0096FC10 0DFD2E4
+0019F92C   0071D5BE      warspear.006E7EA0                     warspear.0071D5B9             0019F928   0096FC10 0A637A0
+0019F988   0084EEE6      warspear.0071D3B0                     warspear.0084EEE4             0019F984   00030BAC 8000601
+0019F9B8   00832ECB      warspear.0084EDD0                     warspear.00832EC6             0019F9B4   00000001 0019FAC
+0019F9D0   74C245CB      warspear.00832E30                     USER32.74C245C9               0019F9CC   00030BAC 0000011
+0019F9D4   00030BAC        Arg1 = 00030BAC
+0019F9D8   00000113        Arg2 = 00000113
+0019F9DC   00000000        Arg3 = 00000000
+0019F9E0   015B4473        Arg4 = 015B4473
+0019F9FC   74C028DC      USER32.74C245A0                       USER32.74C028D7               0019F9F8   00832E30 00030BA
+0019FAD8   74C0430B      USER32.74C02680                       USER32.74C04306               0019FAD4   00832E30 0000000
+0019FB44   74C04010      USER32.74C04020                       USER32.74C0400B               0019FB40   00000113 0019FEF
+0019FB50   00832C66      Includes USER32.74C04010              warspear.00832C64             0019FB4C   0019FCE8 004D842
+0019FEF4   00832516      warspear.00832560                     warspear.00832511             0019FEF0   00832508 00C7DCC
+0019FEF8   00832508        Arg1 = 00832508
+0019FEFC   00C7DCC8        Arg2 = 00C7DCC8
+0019FF28   004D8528      warspear.008324C0                     warspear.004D8523             0019FF24   00400000 0000000
+0019FF2C   00400000        Arg1 = 00400000
+0019FF30   00000000        Arg2 = 00000000
+0019FF34   00C7405F        Arg3 = 00C7405F
+0019FF38   00000001        Arg4 = 00000001
+0019FF3C   1C53501F      *** CORRUPT ENTRY ***                                               0019FF70
+
+
+
+!hook_war a 4018c3 ecx mov_cl
+!hook_war o 4fd46e eax,edi,[eax+edi*4] eax+edi*4
+!hook_war o 4fd46a [0x96ea30],[[0x96ea30]+0x10],[[0x96ea30]+0x10]+0x10c8,esi test
+!hook_war a 5410c0 [ebp-4],ecx,[0x96ea30],[[0x96ea30]+0x10],[[0x96ea30]+0x10]+0x10c8,[[[0x96ea30]+0x10]+0x10c8+0x30],
+
+eax=[0x96ea30]
+eax=[eax+0x10]
+eax=eax+0x10c8
+eax = [eax+0x30]
+
