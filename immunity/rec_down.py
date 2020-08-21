@@ -119,6 +119,39 @@ class ExpressionEvaluator(object):
         else:
             raise SyntaxError('Expected NUMBER or LPAREN')
 
+class RecHandler(object):
+    def __init__(self, imm, regs):
+        self.regs = regs
+        self.imm = imm
+
+    def handle_reg(self, val):
+        val_up = val.upper()
+        if val_up in self.regs:
+            return int(self.regs[val_up])
+
+        return 0
+
+    def handle_addr(self, val):
+        if val == 0:
+            return 0
+
+        ret = self.imm.readLong(val)
+        return ret
+
+
+def parse_expr(imm, regs, expr):
+    rh = RecHandler(imm, regs)
+    ee = ExpressionEvaluator(rh)
+    return ee.parse(expr)
+
+
+def parse_exprs(imm, regs, exprs):
+    exprs = exprs.split(',')
+    rh = RecHandler(imm, regs)
+    ee = ExpressionEvaluator(rh)
+    rets = map(lambda x: '{}:{:x}'.format(x, ee.parse(x)), exprs)
+    return ','.join(rets)
+
 
 def descent_parser():
     e = ExpressionEvaluator()

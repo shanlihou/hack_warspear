@@ -12,30 +12,6 @@ HOOK_DEL_ONE = 'o'
 HOOK_SEARCH = 's'
 
 #############################################################################
-class RecHandler(object):
-    def __init__(self, imm, regs):
-        self.regs = regs
-        self.imm = imm
-
-    def handle_reg(self, val):
-        val_up = val.upper()
-        if val_up in self.regs:
-            return int(self.regs[val_up])
-
-        return 0
-
-    def handle_addr(self, val):
-        if val == 0:
-            return 0
-
-        ret = self.imm.readLong(val)
-        return ret
-
-def parse_expr(imm, regs, expr):
-    rh = RecHandler(imm, regs)
-    ee = rec_down.ExpressionEvaluator(rh)
-    return ee.parse(expr)
-
 
 class HookWar(LogBpHook):
     def __init__(self, desp, exprs, is_common=True, print_str='no print'):
@@ -52,7 +28,7 @@ class HookWar(LogBpHook):
         '''
         imm = Debugger()
         if not self.is_common:
-            ret = parse_expr(imm, regs, '[esi+6]')
+            ret = rec_down.parse_expr(imm, regs, '[esi+6]')
             high = (ret & 0xffff0000) >> 16
             low = (ret & 0xffff)
             imm.log("high:{}, low:{}".format(high, low))
@@ -60,7 +36,7 @@ class HookWar(LogBpHook):
 
         if self.exprs:
             exprs = self.exprs.split(',')
-            rh = RecHandler(imm, regs)
+            rh = rec_down.RecHandler(imm, regs)
             ee = rec_down.ExpressionEvaluator(rh)
             rets = map(lambda x: '{}:{:x}'.format(x, ee.parse(x)), exprs)
             imm.log('desp:{} :{}'.format(self.print_str, ','.join(rets)))
@@ -77,33 +53,43 @@ class HookWar(LogBpHook):
 class Hook_3c(HookWar):
     def run(self, regs):
         imm = Debugger()
-        esi = parse_expr(imm, regs, '[[[[[0x96ea30]+0x10]+0x34]+0x38c]+0xe14]')
+        esi = rec_down.parse_expr(imm, regs, '[[[[[0x96ea30]+0x10]+0x34]+0x38c]+0xe14]')
         imm.log('esi:{:x}'.format(esi))
         if not esi:
             return
 
-        addr = parse_expr(imm, regs, '[[[%d+0x48]+0x3c]]' % esi)
+        addr = rec_down.parse_expr(imm, regs, '[[[%d+0x48]+0x3c]]' % esi)
         imm.log('my:{:x}'.format(addr))
         if addr:
-            addr = parse_expr(imm, regs, '[[[[esi+0x48]+0x3c]]+0x14]')
+            addr = rec_down.parse_expr(imm, regs, '[[[[esi+0x48]+0x3c]]+0x14]')
             imm.log('my2:{:x}'.format(addr))
 
 class HookEsi78(HookWar):
     def run(self, regs):
         imm = Debugger()
-        addr = parse_expr(imm, regs, '[[esi+0x78]]+0xc')
+        addr = rec_down.parse_expr(imm, regs, '[[esi+0x78]]+0xc')
         imm.log("will hook:{:x}".format(addr))
         imm.setMemBreakpoint(addr, 'W')
+
+
+class HookClick(HookWar):
+    def run(self, regs):
+        imm = Debugger()
+        ret = rec_down.parse_expr(imm, regs, '[ebx+6]')
+        high = (ret & 0xffff0000) >> 16
+        low = (ret & 0xffff)
+        imm.log("high:{}, low:{}".format(high, low))
+        imm.log(str(imm.callStack()))
 
 
 class HookBag(HookWar):
     def run(self, regs):
         imm = Debugger()
-        calc_eax = parse_expr(imm, regs, '[[[0x96ea30]+0x10]+0x10c8+0x30]')
-        calc_edi = parse_expr(imm, regs, '[ebp-4]')
+        calc_eax = rec_down.parse_expr(imm, regs, '[[[0x96ea30]+0x10]+0x10c8+0x30]')
+        calc_edi = rec_down.parse_expr(imm, regs, '[ebp-4]')
         calc_val = calc_eax + calc_edi * 4
-        calc_ecx = parse_expr(imm, regs, '[%d]' % calc_val)
-        ecx = parse_expr(imm, regs, 'ecx')
+        calc_ecx = rec_down.parse_expr(imm, regs, '[%d]' % calc_val)
+        ecx = rec_down.parse_expr(imm, regs, 'ecx')
         imm.log('calc_ecx:{:x}, calc_edi:{}, ecx:{:x}'.format(calc_ecx, calc_edi, ecx))
 
 
@@ -213,10 +199,11 @@ def main(args):
             imm.log("hook with arg failed!")
     elif arg == HOOK_SELF:
         #addr = '57fc5f'
-        addr = '5410c0'
+        #addr = '5410c0'
+        addr = '5a926a' # HookClick
         rem_hook(imm, addr)
 
-        h = HookBag(addr, '')
+        h = HookClick(addr, '')
         ret = h.add(h.description,  int(addr, 16))
         if ret == -1:
             imm.log("hook with arg failed!")
