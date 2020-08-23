@@ -35,6 +35,7 @@ BEGIN_MESSAGE_MAP(CMainDialogWnd, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_UNHOOK, &CMainDialogWnd::OnBnClickedButtonUnhook)
 	ON_BN_CLICKED(IDC_BUTTON_ATTACK, &CMainDialogWnd::OnBnClickedButtonAttack)
 	ON_BN_CLICKED(IDC_BUTTON_SEARCH_DEAD, &CMainDialogWnd::OnBnClickedButtonSearchDead)
+	ON_BN_CLICKED(IDC_PICK, &CMainDialogWnd::OnBnClickedPick)
 END_MESSAGE_MAP()
 
 
@@ -44,9 +45,6 @@ END_MESSAGE_MAP()
 void CMainDialogWnd::OnBnClickedButtonTest()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	EntityMgr em;
-	em.getData();
-	em.test();
 	TRACE("GameDebug");
 }
 
@@ -73,4 +71,13 @@ void CMainDialogWnd::OnBnClickedButtonAttack()
 void CMainDialogWnd::OnBnClickedButtonSearchDead()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	MsgSearch("hello");
+
+}
+
+
+void CMainDialogWnd::OnBnClickedPick()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	MsgPick("hello");
 }

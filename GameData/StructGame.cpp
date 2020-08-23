@@ -71,6 +71,9 @@ void EntityBase::searchDead()
     }
 }
 
+void EntityBase::pick()
+{}
+
 
 void EntityMgr::readTree(DWORD node)
 {
@@ -136,13 +139,71 @@ void EntityMgr::getData()
     }
 }
 
-void EntityMgr::test()
+void EntityMgr::searchDead()
 {
     try
     {
         auto avatar = this->getEntityByType(EntityType::SELF);
         log_debug("avatar :%d\n", avatar->HP);
         avatar->searchDead();
+    }
+    catch (...)
+    {
+        log_debug("error happened!\n");
+    }
+}
+
+void EntityMgr::attack()
+{
+    try
+    {
+        auto avatar = this->getEntityByType(EntityType::SELF);
+        auto mon = this->getEntityByHp(203);
+        log_debug("avatar :%d\n", avatar->HP);
+        avatar->attack(mon->basePtr);
+    }
+    catch (...)
+    {
+        log_debug("error happened!\n");
+    }
+}
+
+void EntityMgr::pick()
+{
+    try
+    {
+        /*
+            --mov     ecx, [eax + 0Ch]
+            a = readInteger(a + 0xc)
+            --mov     eax, [ecx]
+            a = readInteger(a)
+            --mov     edx, [eax + 74h]
+            a = readInteger(a + 0x74)
+            --mov     ecx, [eax + 40h]
+            a = readInteger(a + 0x40)
+            --add     ecx, 56ACh
+            a = a + 0x56ac
+            --mov     edx, [ebx + 1884h]
+            a = readInteger(a + 0x1884)*/
+        DWORD a = 0x96FC10;
+        log_debug("will pick start:%x\n", a);
+        a = *(DWORD*)(a + 0xc);
+        a = *(DWORD*)(a + 0x0);
+        a = *(DWORD*)(a + 0x74);
+        a = *(DWORD*)(a + 0x40);
+        a = a + 0x56ac;
+        a = *(DWORD*)(a + 0x1884);
+        log_debug("will pick:%x\n", a);
+        __asm
+        {
+            mov ecx, 0x64 
+            push ecx
+            mov ecx, a
+            push ecx
+            mov eax, 0x782430
+            CALL eax
+        }
+
     }
     catch (...)
     {

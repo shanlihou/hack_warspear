@@ -8,14 +8,26 @@ const DWORD g_myMsgCode = RegisterWindowMessageA("myMsgCode");
 enum MsgAction
 {
     ATTACK = 0,
-    DEAD_SEARCH
+    DEAD_SEARCH,
+    PICK
 };
 
-void test()
+void doAction(MsgAction act)
 {
     EntityMgr em;
     em.getData();
-    em.test();
+    switch (act)
+    {
+    case MsgAction::ATTACK:
+        em.attack();
+        break;
+    case MsgAction::DEAD_SEARCH:
+        em.searchDead();
+        break;
+    case MsgAction::PICK:
+        em.pick();
+        break;
+    }
 }
 
 LRESULT CALLBACK GameWndProc(int nCode, WPARAM wParam, LPARAM lParam)
@@ -25,16 +37,7 @@ LRESULT CALLBACK GameWndProc(int nCode, WPARAM wParam, LPARAM lParam)
     {
         if (lpArg->hwnd == getGameWndHandle() && lpArg->message == g_myMsgCode)
         {
-            switch (lpArg->wParam)
-            {
-            case MsgAction::ATTACK:
-                test();
-                break;
-            case MsgAction::DEAD_SEARCH:
-                break;
-            default:
-                break;
-            }
+            doAction((MsgAction)lpArg->wParam);
             return 1;
         }
     }
@@ -66,5 +69,17 @@ DWORD UnHookMainThread()
 DWORD MsgAttack(char* szpName)
 {
     SendMessageA(getGameWndHandle(), g_myMsgCode, MsgAction::ATTACK, (LPARAM)szpName);
+    return 1;
+}
+
+DWORD MsgSearch(char* szpName)
+{
+    SendMessageA(getGameWndHandle(), g_myMsgCode, MsgAction::DEAD_SEARCH, (LPARAM)szpName);
+    return 1;
+}
+
+DWORD MsgPick(char* szpName)
+{
+    SendMessageA(getGameWndHandle(), g_myMsgCode, MsgAction::PICK, (LPARAM)szpName);
     return 1;
 }

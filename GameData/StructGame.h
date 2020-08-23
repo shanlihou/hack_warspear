@@ -19,6 +19,7 @@ public:
 
     virtual void attack(DWORD ptr);
     virtual void searchDead();
+    virtual void pick();
 
 public:
     DWORD basePtr;
@@ -46,5 +47,7 @@ private:
 
 public:
     void getData();
-    void test();
+    void searchDead();
+    void attack();
+    void pick();
 };
