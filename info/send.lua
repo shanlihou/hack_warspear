@@ -87,9 +87,18 @@ function print_0077A1A0()
          print(string.format("ecx:%x, eax:%x, esi:%x, ebp_4:%x, ebp:%x", ECX, EAX, ESI, ebp_4, ebp))
 end
 
+function get_every_win(in_addr, index)
+        local a = readInteger(in_addr + 0x10)
+        a = readInteger(a + index * 4)
+        a = a + 8
+        a = readInteger(a + 0x8)
+        a = readInteger(a + 4 * 5)
+        print(string.format("every:%d, %x", index, a))
+end
+
 function get_window()
 --mov     ecx, offset dword_96FC10
-        local a = 0x96FC10
+        local a = 0x974C58
 --mov     ecx, [eax+0Ch]
         a = readInteger(a+0xc)
         print(a)
@@ -103,8 +112,11 @@ function get_window()
         a = readInteger(a + 0x40)
         print(a)
 --add     ecx, 56ACh
-        a = a + 0x56ac
-        print(a)
+        a = a + 0x5628
+        print(string.format("%x %x", a, a+0x1884))
+        for i = 0, 2 do
+            get_every_win(a, i)
+        end
 --mov     edx, [ebx+1884h]
         a = readInteger(a + 0x1884)
         print(a)
@@ -120,19 +132,73 @@ function print_0077A214()
          print(string.format("ecx:%x, esi:%x, eax_18:%x, win:%x", ECX, ESI, eax_18, win))
 end
 
+function print_76C76C19()
+         local esp = readInteger(ESP)
+         local esp_4 = readInteger(ESP+4)
+         local esp_8 = readInteger(ESP+8)
+         local esp_12 = readInteger(ESP+12)
+         if esp_12 == 6
+         then
+         return
+         end
+         print(string.format("esp:%x, esp_4:%x, esp_8:%x, esp_12:%x", esp, esp_4, esp_8, esp_12))
+end
+
+function debugger_0077E114()
+         local eax_18 = readInteger(EAX+0x18)
+         --local st = print_stack(EBP, 15)
+         --print(st)
+         --local win = get_window()
+         --get_window()
+         print(string.format("pc:%x", EIP))
+         print(string.format("eax_18:%x, esi:%x", eax_18, ESI))
+end
+
+function debugger_795226()
+         ret = print_stack(EBP, 15)
+         print(ret)
+         print(string.format("EAX:%x", EAX))
+end
+
+function debugger_784a21()
+         --mov     ecx, [ecx+esi*4]
+         local ret = readInteger(ECX + ESI * 4)
+         if not(ret == 0xcb9bcf0)
+         then
+             return
+         end
+         print(string.format("ret:%x, ECX:%x, ESI:%x", ret, ECX, ESI))
+end
+
+function debugger_7c08d0()
+         print(1)
+end
+
+
 function debugger_onBreakpoint()
-         print_0077A214()
+         local ebp_4 = readInteger(EBP + 4)
+         if EIP == 0x77E114
+         then
+             debugger_0077E114()
+         else
+             debugger_784a21()
+         end
   return 1
 end
 
 function clear_debug()
   local tbl = debug_getBreakpointList()
+  if tbl == nil
+  then
+      return
+  end
   for i,v in ipairs(tbl) do
       print(string.format("%4d 0x%X",i,v))
       debug_removeBreakpoint(v)
   end
 end
---clear_debug()
---debug_setBreakpoint(0x77A214)  -- called if the above condition is true. And it will set breakpoint at 0x0040CEA6
+clear_debug()
+debug_setBreakpoint(0x77E114)
+--debug_setBreakpoint(0x784a21)
+--debug_setBreakpoint(0x7c08d0)  -- called if the above condition is true. And it will set breakpoint at 0x0040CEA6
 ret = get_window()
-print(ret)
