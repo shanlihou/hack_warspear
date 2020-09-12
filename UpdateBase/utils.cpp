@@ -18,16 +18,16 @@ DWORD readU32(HANDLE hProcess, DWORD pos)
     return targetVal;
 }
 
-DWORD getTargetVal(HANDLE hProcess, const char *asmCode, DWORD oriTarget) 
+std::pair<DWORD, DWORD> getTargetVal(HANDLE hProcess, const char *asmCode, DWORD oriTarget)
 {
     auto rawInfo = getRawCode(asmCode);
     ProcStream ps(hProcess);
     std::vector<DWORD> rets = search(ps, rawInfo.second);
     if (rets.size() > 1 || rets.size() < 1) {
-        printf("search failed:%d\n", rets.size());
-        return 0;
+        printf("search failed:%d\n", rets.size()); 
+        std::make_pair(0, 0);
     }
 
     DWORD targetPos = rets[0] + oriTarget - rawInfo.first;
-    return readU32(hProcess, targetPos);
+    return std::make_pair(targetPos, readU32(hProcess, targetPos));
 }

@@ -23,9 +23,25 @@ static const char*g_testCode[] = { "0073F211  |. 8A41 08        MOV AL,BYTE PTR 
     0073F22A | . 50             PUSH EAX; | Arg3\
     0073F22B | .FFB7 EC000000  PUSH DWORD PTR DS : [EDI + EC] ; | Arg2\
     0073F231 | . 8D8A E80C0000  LEA ECX, DWORD PTR DS : [EDX + CE8] ; |\
-    0073F237 | . 6A 01          PUSH 1; | Arg1 = 00000001" };
+    0073F237 | . 6A 01          PUSH 1; | Arg1 = 00000001",
+    "0073F205  |> 8B96 8C030000  MOV EDX,DWORD PTR DS:[ESI+38C]\
+0073F20B | . 8B8A 78110000  MOV ECX,DWORD PTR DS : [EDX + 1178]\
+0073F211 | . 8A41 08        MOV AL,BYTE PTR DS : [ECX + 8]\
+0073F214 | . 8845 09        MOV BYTE PTR SS : [EBP + 9] ,AL\
+0073F217 | . 8A41 0A        MOV AL,BYTE PTR DS : [ECX + A]\
+0073F21A | . 8845 0A        MOV BYTE PTR SS : [EBP + A] ,AL\
+0073F21D | . 8A41 0C        MOV AL,BYTE PTR DS : [ECX + C]\
+0073F220 | . 8845 0B        MOV BYTE PTR SS : [EBP + B] ,AL\
+0073F223 | . 8D45 09        LEA EAX,DWORD PTR SS : [EBP + 9]\
+0073F226 | . 50             PUSH EAX; / Arg4\
+0073F227 | . 8D47 08        LEA EAX,DWORD PTR DS : [EDI + 8] ; |\
+0073F22A | . 50             PUSH EAX; | Arg3\
+0073F22B | .FFB7 EC000000  PUSH DWORD PTR DS : [EDI + EC] ; | Arg2\
+0073F231 | . 8D8A E80C0000  LEA ECX,DWORD PTR DS : [EDX + CE8] ; |\
+0073F237 | . 6A 01          PUSH 1; | Arg1 = 00000001"
+};
 
-static DWORD g_readPos[] = { 0x0073F23F };
+static DWORD g_readPos[] = { 0x0073F23F, 0x0073F1E0 };
 
 int main()
 {
@@ -55,8 +71,8 @@ int main()
     int length = (sizeof(g_testCode) / sizeof(char*));
     for (int i = 0; i < length; i ++) 
     {
-        DWORD targetVal = getTargetVal(hProcess, g_testCode[i], g_readPos[i]);
-        printf("final:%x", targetVal);
+        auto retPair = getTargetVal(hProcess, g_testCode[i], g_readPos[i]);
+        printf("\nfinal:%x, %x", retPair.first, retPair.second);
     }
     CloseHandle(hProcess);
     return 0;

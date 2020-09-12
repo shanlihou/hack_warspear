@@ -19,7 +19,7 @@ char getHexFromStr(const char* hex) {
 
 std::pair<DWORD, std::vector<char>> getRawCode(const char *code) {
 
-    regex reg("(\\w+) *\\| *\\. *((?:[\\dABCDEF]+ )+)");
+    regex reg("(\\w+) *\\| *[\\.\\>] *((?:[\\dABCDEF]+ )+)");
     //regex reg("(\\w+) *\\| *\\. *([\\dABCDEF]+ )+");
     std::string content(code);
     std::smatch m;
