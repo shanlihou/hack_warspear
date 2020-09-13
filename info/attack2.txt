@@ -96,3 +96,59 @@ ebp 904
 ebp = 904
 
 cmp eax_out 0
+
+
+攻击函数
+0073F1E0 >|$ 55             PUSH EBP
+0073F1E1  |. 8BEC           MOV EBP,ESP
+0073F1E3  |. 51             PUSH ECX
+0073F1E4  |. 56             PUSH ESI
+0073F1E5  |. 57             PUSH EDI
+0073F1E6  |. 8B7D 08        MOV EDI,DWORD PTR SS:[EBP+8]
+0073F1E9  |. 8BF1           MOV ESI,ECX
+0073F1EB  |. 39BE 68020000  CMP DWORD PTR DS:[ESI+268],EDI
+0073F1F1  |. 75 12          JNZ SHORT warspear.0073F205
+0073F1F3  |. 8B8E 8C030000  MOV ECX,DWORD PTR DS:[ESI+38C]
+0073F1F9  |. 83C1 68        ADD ECX,68
+0073F1FC  |. E8 8FA4E1FF    CALL warspear.00559690
+0073F201  |. 84C0           TEST AL,AL
+0073F203  |. 74 72          JE SHORT warspear.0073F277
+0073F205  |> 8B96 8C030000  MOV EDX,DWORD PTR DS:[ESI+38C]
+0073F20B  |. 8B8A 78110000  MOV ECX,DWORD PTR DS:[EDX+1178]
+0073F211  |. 8A41 08        MOV AL,BYTE PTR DS:[ECX+8]
+0073F214  |. 8845 09        MOV BYTE PTR SS:[EBP+9],AL
+0073F217  |. 8A41 0A        MOV AL,BYTE PTR DS:[ECX+A]
+0073F21A  |. 8845 0A        MOV BYTE PTR SS:[EBP+A],AL
+0073F21D  |. 8A41 0C        MOV AL,BYTE PTR DS:[ECX+C]
+0073F220  |. 8845 0B        MOV BYTE PTR SS:[EBP+B],AL
+0073F223  |. 8D45 09        LEA EAX,DWORD PTR SS:[EBP+9]
+0073F226  |. 50             PUSH EAX                                 ; /Arg4
+0073F227  |. 8D47 08        LEA EAX,DWORD PTR DS:[EDI+8]             ; |
+0073F22A  |. 50             PUSH EAX                                 ; |Arg3
+0073F22B  |. FFB7 EC000000  PUSH DWORD PTR DS:[EDI+EC]               ; |Arg2
+0073F231  |. 8D8A E80C0000  LEA ECX,DWORD PTR DS:[EDX+CE8]           ; |
+0073F237  |. 6A 01          PUSH 1                                   ; |Arg1 = 00000001
+0073F239  |. E8 E2600300    CALL warspear.00775320                   ; \warspear.00775320
+0073F23E  |. A1 30EA9600    MOV EAX,DWORD PTR DS:[96EA30]
+0073F243  |. 8B40 28        MOV EAX,DWORD PTR DS:[EAX+28]
+0073F246  |. 8B88 10020000  MOV ECX,DWORD PTR DS:[EAX+210]
+0073F24C  |. 81C1 00870000  ADD ECX,8700
+0073F252  |. E8 59990600    CALL warspear.007A8BB0
+0073F257  |. 57             PUSH EDI                                 ; /Arg1
+0073F258  |. 8BCE           MOV ECX,ESI                              ; |
+0073F25A  |. E8 61D2FFFF    CALL warspear.0073C4C0                   ; \warspear.0073C4C0
+0073F25F  |. 8BCE           MOV ECX,ESI
+0073F261  |. E8 DA5A0000    CALL warspear.00744D40
+0073F266  |. 8D48 FF        LEA ECX,DWORD PTR DS:[EAX-1]
+0073F269  |. 83F9 07        CMP ECX,7
+0073F26C  |. 77 09          JA SHORT warspear.0073F277
+0073F26E  |. 51             PUSH ECX
+0073F26F  |. 50             PUSH EAX
+0073F270  |. 8BCE           MOV ECX,ESI
+0073F272  |. E8 99FAFFFF    CALL warspear.0073ED10
+0073F277  |> 5F             POP EDI
+0073F278  |. 5E             POP ESI
+0073F279  |. 59             POP ECX
+0073F27A  |. 5D             POP EBP
+0073F27B  \. C2 0400        RETN 4
+
