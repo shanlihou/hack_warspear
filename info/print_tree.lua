@@ -66,9 +66,9 @@ function process()
     end
 end
 
-local g_base = readInteger(9890352)
-local tmp_ptr = readInteger(g_base + 16)
-tmp_ptr = readInteger(tmp_ptr + 48)
+local g_base = readInteger(0x9a45b0)
+local tmp_ptr = readInteger(g_base + 0x10)
+tmp_ptr = readInteger(tmp_ptr + 0x38)
 local root = readInteger(tmp_ptr)
 print('start')
 read_tree(root, handleNode)
