@@ -45,7 +45,7 @@ END_MESSAGE_MAP()
 void CMainDialogWnd::OnBnClickedButtonTest()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	TRACE("GameDebug");
+	MsgTest("GameDebug");
 }
 
 

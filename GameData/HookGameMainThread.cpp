@@ -9,7 +9,8 @@ enum MsgAction
 {
     ATTACK = 0,
     DEAD_SEARCH,
-    PICK
+    PICK,
+    TEST
 };
 
 void doAction(MsgAction act)
@@ -26,6 +27,8 @@ void doAction(MsgAction act)
         break;
     case MsgAction::PICK:
         em.pick();
+        break;
+    case MsgAction::TEST:
         break;
     }
 }
@@ -81,5 +84,11 @@ DWORD MsgSearch(char* szpName)
 DWORD MsgPick(char* szpName)
 {
     SendMessageA(getGameWndHandle(), g_myMsgCode, MsgAction::PICK, (LPARAM)szpName);
+    return 1;
+}
+
+DWORD MsgTest(char* szpName)
+{
+    SendMessageA(getGameWndHandle(), g_myMsgCode, MsgAction::TEST, (LPARAM)szpName);
     return 1;
 }

@@ -6,3 +6,4 @@ DWORD UnHookMainThread();
 DWORD MsgAttack(char* szpName);
 DWORD MsgSearch(char* szpName);
 DWORD MsgPick(char* szpName);
+DWORD MsgTest(char* szpName);

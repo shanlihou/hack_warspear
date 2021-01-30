@@ -128,7 +128,7 @@ void EntityMgr::getData()
     {
         DWORD tmpVal = *(DWORD *)BASE_MONSTER_LIST_ROOT;
         tmpVal = *(DWORD*)(tmpVal + 0x10);
-        tmpVal = *(DWORD*)(tmpVal + 0x30);
+        tmpVal = *(DWORD*)(tmpVal + 0x38);
         tmpVal = *(DWORD*)(tmpVal);
         this->entities.clear();
         readTree(tmpVal);
