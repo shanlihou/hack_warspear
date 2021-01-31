@@ -39,7 +39,7 @@ void EntityBase::searchDead()
         /*
         !hook_war a 57fc5f esi, [esi + 0x48], [[esi + 0x48]+ 0x3c], [[[esi + 0x48]+ 0x3c] ], [[[[esi + 0x48]+ 0x3c] ] + 0x14] eax + 14
             !hook_war a 73fae7[0x96ea30], [[0x96ea30]+ 0x10], [[[0x96ea30]+ 0x10] + 0x34], [[[[0x96ea30]+ 0x10] + 0x34] + 0x38c], [[[[[0x96ea30]+ 0x10] + 0x34] + 0x38c] + 0xe14]*/
-        DWORD tmp_ptr = *(DWORD*)(BASE_DEAD_SEARCH_ADDR);
+        DWORD tmp_ptr = *(DWORD*)(BASE_MONSTER_LIST_ROOT);
         tmp_ptr = *(DWORD*)(tmp_ptr + 0x10);
         tmp_ptr = *(DWORD*)(tmp_ptr + 0x34);
         tmp_ptr = *(DWORD*)(tmp_ptr + 0x38c);
