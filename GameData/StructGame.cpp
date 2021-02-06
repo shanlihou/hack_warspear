@@ -5,6 +5,7 @@
 
 void EntityBase::attack(DWORD monsterPtr)
 {
+    log_debug("enter attack\n");
     try
     {
         DWORD selfPtr = this->basePtr;
@@ -14,7 +15,7 @@ void EntityBase::attack(DWORD monsterPtr)
             mov eax, monsterPtr
             push eax //怪物的地址
             mov ecx, selfPtr //自己的地址
-            mov eax, 0x0073F1E0
+            mov eax, 0x00769c50
             CALL eax
         }
     }
@@ -103,6 +104,7 @@ EntityBase::EntityBasePtr EntityMgr::getEntityByHp(DWORD hp)
     {
         if (ptr.second->HP == hp)
         {
+            log_debug("find hp\n");
             return EntityBase::EntityBasePtr(ptr.second);
         }
     }
@@ -157,10 +159,13 @@ void EntityMgr::attack()
 {
     try
     {
+        log_debug("avatar attack\n");
         auto avatar = this->getEntityByType(EntityType::SELF);
-        auto mon = this->getEntityByHp(203);
-        log_debug("avatar :%d\n", avatar->HP);
-        avatar->attack(mon->basePtr);
+        auto mon = this->getEntityByHp(470);
+        if (mon) {
+            log_debug("avatar :%d\n", avatar->HP, mon->basePtr);
+            avatar->attack(mon->basePtr);
+        }
     }
     catch (...)
     {

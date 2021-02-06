@@ -12,7 +12,9 @@ class HookStack(LogBpHook):
     def run(self, regs):
         imm = Debugger()
         #ret = rec_down.parse_exprs(imm, regs, '[esp],[esp+8],[esp+12],[esp+16]')
-        data_len = rec_down.parse_expr(imm, regs, '[esp+12]')
+        # data_len = rec_down.parse_expr(imm, regs, '[esp+12]')
+        data_len = regs['eax']
+        imm.log('eax is:', data_len)
         if data_len != 6:
             data_addr = rec_down.parse_expr(imm, regs, '[esp+8]')
             ret = imm.readMemory(data_addr, data_len)
@@ -43,7 +45,7 @@ def main(args):
     opr = args[0]
     if opr == 'hook':
         # ---------------------------- send start ------------------------------------
-        addr = '76C76C19' # bp send
+        addr = '883c7c' # bp send
         #addr = '008563D1' # 8418a6
         #addr = '841871'
         # ---------------------------- send end --------------------------------------
