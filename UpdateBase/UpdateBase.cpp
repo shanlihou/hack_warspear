@@ -6,6 +6,7 @@
 #include "RawCode.h"
 #include "kmp.h"
 #include "utils.h"
+#include <Python.h>
 
 #define GAME_CLASS_NAME "Warspear"
 #define PAGE_SIZE 1024
@@ -36,6 +37,25 @@ static const char* g_suffixes[] = { "00570FD0   . FF77 14                  PUSH 
 
 static DWORD g_readPos[] = {0x570fcc - 0x570fbd, 0};
 
+void testHello()
+{
+    Py_Initialize();//调用Py_Initialize()进行初始化
+    PyObject *pName = PyUnicode_FromString("test");
+    PyObject *pModule = PyImport_ImportModule("ckz_test"); //载入plot3dfun的模块
+    PyObject* pFunc = NULL;
+    PyRun_SimpleString("import sys");
+    PyRun_SimpleString("print(sys.path)");
+    PyRun_SimpleString("import ckz_test");
+    PyRun_SimpleString("ckz_test.hello()");
+    pFunc = PyObject_GetAttrString(pModule, "hello");//调用的函数名
+    if (pFunc) {
+        PyObject* tup = PyTuple_New(0);
+        PyObject_Call(pFunc, tup, NULL);//调用函数,NULL表示参数为空
+    }
+    printf("im fine %p %p\n", pModule, pFunc);
+    Py_Finalize();//调用Py_Finalize,和Py_Initialize相对应的.
+}
+
 int main()
 {
     DWORD pid = 0;
@@ -45,7 +65,7 @@ int main()
     warHandle = FindWindowA(GAME_CLASS_NAME, NULL);
     if (warHandle == 0)
         return -1;
-
+    testHello();
     printf("find handle\n");
     GetWindowThreadProcessId(warHandle, &pid);
     if (pid == 0)
