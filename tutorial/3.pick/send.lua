@@ -43,10 +43,18 @@ function print_tmp()
          tmp = readInteger(tmp + 0x40)
          print(string.format("tmp5 is 0x%X", tmp))
          tmp = tmp + 0x550c;
-         tmp = readInteger(tmp + 0x1a98)
-         print(string.format("tmp6 is 0x%X", tmp))
+         tmp = readInteger(tmp + 0x10)
+         tmp = readInteger(tmp + 0x8)
+         tmp = tmp + 0x8
+         tmp = readInteger(tmp + 0x8)
+         tmp = readInteger(tmp + 20)
          tmp = readInteger(tmp + 0x18)
-         print(string.format("tmp7 is 0x%X", tmp))
+         print(string.format("tmp6 is 0x%X", tmp))
+
+         --tmp = readInteger(tmp + 0x1a98)
+         --print(string.format("tmp6 is 0x%X", tmp))
+         --tmp = readInteger(tmp + 0x18)
+         --print(string.format("tmp7 is 0x%X", tmp))
 end
 
 function debugger_onBreakpoint()
@@ -69,19 +77,24 @@ function debugger_onBreakpoint()
          elseif EIP == 0x006f0e20 -- 拾取函数调用点
          then
              print(g_str)
-             print(string.format("eip:0x%X, esi:0x%X, eax:0x%X", EIP, ESI, EAX))
+             print(string.format("eip:0x%X, target esi:0x%X, eax:0x%X, g_1a98:0x%X, g_low_esi:0x%X", EIP, ESI, EAX, g_1a98, g_low_esi))
          elseif EIP == 0x007BECA6 -- 拾取函数变量转移
          then
              local tmp = readInteger(EAX + 0x18)
-             print(string.format("eip:0x%X, eax:0x%X, tmp:0x%X", EIP, EAX, tmp))
-         elseif EIP == 0x007AFa0d -- 追踪ecx + esi * 4
+             print(string.format("eip:0x%X, eax:0x%X, tmp:0x%X, g_esi:0x%X, g_arg0:0x%X", EIP, EAX, tmp, g_esi, g_arg0))
+         elseif EIP == 0x007Bf049 -- 追踪ecx + esi * 4
          then
-             local tmp = readInteger(EAX + 0x18)
-             g_str = string.format("tmp:0x%X", tmp)
-             if tmp == 0x7e8b20
-             then
-                 print(string.format("eip:0x%X", EIP))
-             end
+             g_1a98 = readInteger(EBX + 0x1a98)
+             g_1a98 = readInteger(g_1a98 + 0x18)
+         elseif EIP == 0x007Bf176 -- 追踪ecx + esi * 4
+         then
+             g_esi = ESI
+         elseif EIP == 0x007a74f4 -- 变量转移上一层
+         then
+             g_arg0 = ESI
+         elseif EIP == 0x007ae050 -- esi 层级低一点的esi
+         then
+             g_low_esi = ESI
          end
 
     return 1
@@ -90,10 +103,16 @@ end
 clear_debug()
 print(1)
 g_str = "";
+g_1a98 = 0;
+g_esi = 0;
+g_arg0 = 0;
+g_low_esi = 0;
 --debug_setBreakpoint(0x0050e35c)
 --debug_setBreakpoint(0x00883c7c)
 debug_setBreakpoint(0x006f0e20)
 debug_setBreakpoint(0x007BECA6)
+debug_setBreakpoint(0x007Bf176)
+debug_setBreakpoint(0x007ae050)
 --debug_setBreakpoint(0x007AFa0d)
 
---print_tmp()
+print_tmp()

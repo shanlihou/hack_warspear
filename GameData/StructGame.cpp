@@ -217,10 +217,24 @@ void EntityMgr::pick()
         a = *(DWORD*)(a + 0x40);
         log_debug("will pick start5:%x\n", a);
         a += 0x550c;
-        log_debug("will pick start6:%x\n", a);
-        a = *(DWORD*)(a + 0x1A98);
-        log_debug("will pick:%x\n", a);
-        a = *(DWORD*)(a + 0x18);
+        log_debug("will pick start5:%x\n", a);
+        a = *(DWORD*)(a + 0x10); //tmp = readInteger(tmp + 0x10)
+        log_debug("will pick start5:%x\n", a);
+        a = *(DWORD*)(a + 0x8); //    tmp = readInteger(tmp + 0x8)
+        log_debug("will pick start5:%x\n", a);
+        a += 8; //    tmp = tmp + 0x8
+        log_debug("will pick start5:%x\n", a);
+        a = *(DWORD*)(a + 0x8); //    tmp = readInteger(tmp + 0x8)
+        log_debug("will pick start5:%x\n", a);
+        a = *(DWORD*)(a + 20); //    tmp = readInteger(tmp + 20)
+        log_debug("will pick start5:%x\n", a);
+        a = *(DWORD*)(a + 0x18); //    tmp = readInteger(tmp + 0x18)
+        log_debug("will pick start5:%x\n", a);
+        log_debug("new will pick start6:%x\n", a);
+        //log_debug("will pick start6:%x\n", a);
+        //a = *(DWORD*)(a + 0x1A98);
+        //log_debug("will pick:%x\n", a);
+        //a = *(DWORD*)(a + 0x18);
 
         __asm
         {
